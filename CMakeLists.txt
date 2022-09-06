@@ -2,6 +2,8 @@ project(corefoundation)
 
 include(darling_framework)
 
+remove_sdk_framework(CoreFoundation)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fblocks -fconstant-cfstrings -fexceptions \
 	-include ${CMAKE_CURRENT_SOURCE_DIR}/CoreFoundation_Prefix.h \
 	-include ${CMAKE_CURRENT_SOURCE_DIR}/macros.h \
@@ -164,11 +166,18 @@ set(cf_sources
 	NSBlockInvocation.m
 )
 
+set(FRAMEWORK_VERSION "A")
+
+generate_sdk_framework(CoreFoundation
+    VERSION ${FRAMEWORK_VERSION}
+    HEADER "include/CoreFoundation"
+)
+
 add_separated_framework(CoreFoundation
 	CURRENT_VERSION
 	SOURCES
 		${cf_sources}
-	VERSION "A"
+	VERSION ${FRAMEWORK_VERSION}
 	DEPENDENCIES
 		objc
 		system
