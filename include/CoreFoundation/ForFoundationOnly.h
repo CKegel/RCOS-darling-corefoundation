@@ -555,10 +555,8 @@ extern kern_return_t _CFDiscorporateMemoryMaterialize(CFDiscorporateMemory *hm);
 #endif
 
 enum {
-    kCFNumberFormatterOrdinalStyle = 6,
     kCFNumberFormatterDurationStyle = 7,
 };
-
 // This is for NSNumberFormatter use only!
 CF_EXPORT void *_CFNumberFormatterGetFormatter(CFNumberFormatterRef formatter);
 
