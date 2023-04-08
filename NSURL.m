@@ -17,6 +17,7 @@
 #import <objc/runtime.h>
 #include <sys/statvfs.h>
 #include <sys/stat.h>
+#include <dlfcn.h>
 
 #define STACK_BUFFER_SIZE 100 // pretty safe bet this will be quite unlikely to use more than this since there are only 94 properties
 
@@ -155,6 +156,17 @@ static void posixError(CFErrorRef *error) {
 
     CFRelease(err);
 }
+
+static void dlError(CFErrorRef *error) {
+    int saved_errno = errno;
+    const CFStringRef key = kCFErrorUnderlyingErrorKey;
+    CFStringRef underlyingError = CFStringCreateWithCString(kCFAllocatorDefault, dlerror(), kCFStringEncodingUTF8);
+    CFTypeRef value = underlyingError;
+    
+    if(error != NULL)
+        *error = CFErrorCreateWithUserInfoKeysAndValues(kCFAllocatorDefault, kCFErrorDomainPOSIX, saved_errno, (const void *const *) &key, (const void *const *) &value, 1); 
+    CFRelease(underlyingError);
+};
 
 static Boolean CFURLStat(CFURLRef url, struct stat *info) {
     UInt8 path[PATH_MAX] = { 0 };
@@ -351,7 +363,43 @@ static CFTypeRef CFURLCreatePropertyForKey(CFURLRef url, CFStringRef key, CFErro
     else if (CFEqual(key, kCFURLTypeIdentifierKey))
     {
         // Key for the resource’s uniform type identifier (UTI), returned as a CFString object.
+        static dispatch_once_t pred;
+        static void* LaunchServicesHandle;
+        static CFErrorRef LaunchServicesHandleError;
 
+        dispatch_once(&pred, ^{
+            LaunchServicesHandle = dlopen("/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/LaunchServices", RTLD_LAZY | RTLD_LOCAL);
+            if(LaunchServicesHandle == NULL)
+                dlError(&LaunchServicesHandleError);
+            });
+
+        if(LaunchServicesHandle == NULL){
+            if (error != NULL)
+                *error = CFRetain(LaunchServicesHandleError);
+            return NULL;
+        }
+
+        static CFStringRef (*UTTypeCreatePreferredIdentifierForTag)(CFStringRef, CFStringRef, _Nullable CFStringRef);
+        static CFStringRef *tagType;
+        static dispatch_once_t dlsym_pred;
+
+        dispatch_once(&dlsym_pred, ^{
+            UTTypeCreatePreferredIdentifierForTag = dlsym(LaunchServicesHandle, "UTTypeCreatePreferredIdentifierForTag");
+            tagType = dlsym(LaunchServicesHandle, "kUTTagClassFilenameExtension");
+            if(UTTypeCreatePreferredIdentifierForTag == NULL || tagType == NULL)
+                dlError(&LaunchServicesHandleError);
+        });
+
+        if(UTTypeCreatePreferredIdentifierForTag == NULL || tagType == NULL){
+            if (error != NULL)
+                *error = CFRetain(LaunchServicesHandleError);
+            return NULL;
+        }
+        
+        CFStringRef extension = CFURLCopyPathExtension(url);
+        value = UTTypeCreatePreferredIdentifierForTag(*tagType, extension, NULL); 
+
+        CFRelease(extension);
     }
     else if (CFEqual(key, kCFURLLocalizedTypeDescriptionKey))
     {
