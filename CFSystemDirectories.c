@@ -44,7 +44,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pwd.h>
-//#include <NSSystemDirectories.h>
+// Can't include <NSSystemDirectories.h> due to type conflict with NSSearchPathDirectory
+// #ifndef __NS_SYSTEM_DIRECTORIES_H__
+// #define __NS_SYSTEM_DIRECTORIES_H__
+typedef unsigned int NSSearchPathEnumerationState;
+__OSX_AVAILABLE_STARTING(__MAC_10_0,__IPHONE_2_0)
+extern NSSearchPathEnumerationState NSGetNextSearchPathEnumeration(NSSearchPathEnumerationState state, char *path);
+__OSX_AVAILABLE_STARTING(__MAC_10_0,__IPHONE_2_0)
+extern NSSearchPathEnumerationState NSStartSearchPathEnumeration(NSSearchPathDirectory dir, NSSearchPathDomainMask domainMask);
+// #endif /* __NS_SYSTEM_DIRECTORIES_H__ */
 
 CFSearchPathEnumerationState __CFStartSearchPathEnumeration(CFSearchPathDirectory dir, CFSearchPathDomainMask domainMask) {
     return NSStartSearchPathEnumeration(dir, domainMask);

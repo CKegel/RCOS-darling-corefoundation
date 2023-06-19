@@ -31,6 +31,7 @@
 #include <CoreFoundation/CFRuntime.h>
 #include "CFInternal.h"
 #include "CFBasicHash.h"
+#include "FoundationExceptions.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

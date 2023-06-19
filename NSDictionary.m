@@ -15,6 +15,7 @@
 #include <Foundation/NSError.h>
 
 #import "CFInternal.h"
+#import "CFSortFunctions.h"
 #import "NSFastEnumerationEnumerator.h"
 #import <Foundation/NSKeyValueObserving.h>
 #import "NSObjectInternal.h"

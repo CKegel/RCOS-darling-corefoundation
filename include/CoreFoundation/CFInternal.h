@@ -844,6 +844,7 @@ CF_INLINE dispatch_queue_t __CFDispatchQueueGetGenericBackground(void) {
 
 #endif
 
+CF_PRIVATE void __CFAttributedStringInitialize(void);
 
 CF_EXTERN_C_END
 

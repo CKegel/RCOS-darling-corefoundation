@@ -13,9 +13,12 @@
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSLocale.h>
 
+#import <objc/message.h>
+
 #import "CFBasicHash.h"
 #import "ForFoundationOnly.h"
 
+#import "CFSortFunctions.h"
 #import "NSBasicHash.h"
 #import "NSFastEnumerationEnumerator.h"
 #import "NSObjectInternal.h"
