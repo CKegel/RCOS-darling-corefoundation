@@ -50,7 +50,7 @@ id __NSMakeSpecialForwardingCaptureBlock(const char* signature, void (^proxyBloc
 
 	custom->block.blockInternal.isa = _NSConcreteMallocBlock;
 	custom->block.blockInternal.flags = BLOCK_NEEDS_FREE | BLOCK_HAS_SIGNATURE | BLOCK_HAS_COPY_DISPOSE | (1 << 1);
-	custom->block.blockInternal.invoke = _CF_forwarding_prep_b;
+	custom->block.blockInternal.invoke = (BlockInvokeFunction)_CF_forwarding_prep_b;
 	custom->block.blockInternal.descriptor = &custom->descs.desc1;
 
 	custom->block.proxy = proxyBlock;

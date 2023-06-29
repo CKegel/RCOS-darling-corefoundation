@@ -328,12 +328,12 @@ static BOOL isBlock(id object)
     if (isBlock([self target]))
     {
         struct Block_layout *block_layout = (struct Block_layout *) target;
-        imp = block_layout->invoke;
+        imp = (IMP)block_layout->invoke;
     }
     #if !defined(__arm64__)
         else if ([_signature _stret])
         {
-            imp = &objc_msgSend_stret;
+            imp = (IMP)&objc_msgSend_stret;
         }
     #endif
     else

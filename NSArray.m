@@ -18,6 +18,7 @@
 #import "NSObjectInternal.h"
 #import "NSStringInternal.h"
 #import "CFInternal.h"
+#import "CFSortFunctions.h"
 
 CF_EXPORT Boolean _CFArrayIsMutable(CFArrayRef array);
 CF_EXPORT NSUInteger _CFArrayFastEnumeration(CFArrayRef array, NSFastEnumerationState *state, id __unsafe_unretained stackbuffer[], NSUInteger count);

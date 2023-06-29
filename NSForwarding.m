@@ -23,6 +23,7 @@ along with Darling.  If not, see <http://www.gnu.org/licenses/>.
 //  Copyright (c) 2014 Apportable. All rights reserved.
 //
 
+#import <CoreFoundation/CFLogUtilities.h>
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSMethodSignature.h>
 
