@@ -319,4 +319,9 @@ NSString *const NSLocaleVariantCodeKey = @"kCFLocaleVariantCodeKey";
     return CFEqual((CFTypeRef)self, (CFTypeRef)other);
 }
 
+- (NSString *)localizedStringForLocaleIdentifier:(NSString *)identifier
+{
+    return [self displayNameForKey:NSLocaleIdentifier value:identifier];
+}
+
 @end
