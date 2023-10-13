@@ -143,8 +143,7 @@
 
 - (NSError *)streamError
 {
-    CFStreamError err = CFReadStreamGetError((CFReadStreamRef)self);
-    return [(NSError *)_CFErrorFromStreamError(kCFAllocatorDefault, &err) autorelease];
+    return [CFReadStreamCopyError((CFReadStreamRef)self) autorelease];
 }
 
 - (NSStreamStatus)streamStatus
