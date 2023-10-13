@@ -24,8 +24,11 @@ extern objc_exception_preprocessor objc_setExceptionPreprocessor(objc_exception_
 
 static NSException *__exceptionPreprocess(NSException *exception)
 {
-// this is quite expensive (1/3 sec lag), when it can be made more performant (under 1/60 sec) this should be re-enabled
-#if 0
+    // this is quite expensive (1/3 sec lag), when it can be made more performant (under 1/60 sec) this should be re-enabled
+    // UPDATE(facekapow): i've re-enabled this even though nothing has really changed in the code, but from limited testing
+    //                    it seems that this is pretty performant. besides, exceptions are just that: *exceptions*.
+    //                    you shouldn't be constantly throwing around exceptions.
+#if 1
     [exception _installStackTraceKeyIfNeeded];
 #endif
     return exception;
