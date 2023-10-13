@@ -76,8 +76,12 @@ CF_PRIVATE
     {
         dictionary = [__NSPlaceholderDictionary immutablePlaceholder];
     }
-    else if (self == [NSMutableDictionary class])
+    else if (self == [NSMutableDictionary class] || self == [__NSCFDictionary class])
     {
+        // we check for `[__NSCFDictionary class]` because Xcode has a convenience class method defined on NSMutableDictionary
+        // that returns `self` as the mutable version of the class (as it should). however, since our `__NSCFDictionary` inherits
+        // from NSMutableDictionary, it also inherits this cateogry class method. `__NSCFDictionary` itself can be either,
+        // but we err on the side of caution and return a mutable placeholder.
         dictionary = [__NSPlaceholderDictionary mutablePlaceholder];
     }
     else
