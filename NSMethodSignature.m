@@ -135,6 +135,10 @@ extern void __CFStringAppendBytes(CFMutableStringRef, const char *, CFIndex, CFS
                         // Account for the stret return pointer.
                         _frameLength += sizeof(void *);
                         _stret = YES;
+#if __LP64__
+                        // on x86_64, the first GP register (rdi) is used to pass the stret pointer
+                        ++usedGPRegisters;
+#endif
                     }
                     break;
                 }
