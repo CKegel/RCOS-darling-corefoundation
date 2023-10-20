@@ -83,7 +83,7 @@ static __CFRunArrayItem * _CFRunArrayItemInit(CFRange range, CFDictionaryRef dic
 {
     __CFRunArrayItem *obj = (__CFRunArrayItem *)malloc(sizeof(__CFRunArrayItem));
     obj->_range = range;
-    obj->_dictionary = CFRetain(dict);
+    obj->_dictionary = CFDictionaryCreateCopy(kCFAllocatorDefault, dict);
     return obj;
 }
 
