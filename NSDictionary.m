@@ -978,6 +978,15 @@ static NSString *_getDescription(id obj, id locale, int level)
     return success;
 }
 
+- (BOOL)writeToURL:(NSURL *)url error:(NSError * _Nullable *)error
+{
+    //TODO: ensure write options are correct and implement error checking for data validation
+    NSData *data = (NSData *)_CFPropertyListCreateXMLData(kCFAllocatorDefault, (CFPropertyListRef)self, true);
+    BOOL success = [data writeToURL:url options:NSDataWritingAtomic error:error];
+    [data release];
+    return success;
+}
+
 - (BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically
 {
     NSData *data = (NSData *)_CFPropertyListCreateXMLData(kCFAllocatorDefault, (CFPropertyListRef)self, true);
